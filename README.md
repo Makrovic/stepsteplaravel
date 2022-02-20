@@ -1,9 +1,13 @@
+**baca dengan runtut dan teliti, kurang jelas lihat dokumentasi**
+
 # 1. Wireframing
 * identifikasi kebutuhan sistem
-* tentukan tabel apa saja yang dibutuhkan
-* tentukan record/kolom apa saja yang harus dibuat
+* tentukan tabel/objek/entitas apa saja yang dibutuhkan
+* tentukan kolom/attribute/property apa saja yang harus dibuat
+* hidari spasi dengan - (strip) dalam penamaan kolom
 * tentukan halaman apa saja yang harus dibuat
 * catat
+___
 
 # 2. Instalasi
 * buka folder `c:/xampp/htdocs/`
@@ -12,6 +16,7 @@
 composer create-project laravel/laravel (nama_project)
 ```
 * buat database di phpmyadmin
+___
 
 # 3. Setup Project
 * buka vscode, open folder
@@ -31,7 +36,7 @@ php artisan make:controller NamaController
 ```
 * buat skema semua tabel yang sudah dibuat di dalam migration
 * sesuaikan nama kolom dengan tipe datanya, [dokumentasi](https://laravel.com/docs/9.x/migrations#available-column-types)
-* tambahkan `unique()` di setiap primary key dari setiap tabel
+* tambahkan `->unique()` di setiap primary key dari setiap tabel
 * *penamaan kolom jangan pakai - (strip), pakai _ (underscore)*
 ```php
 Schema::create('namatabels', function (Blueprint $table) {
@@ -50,8 +55,11 @@ php artisan migrate
 ```env
 php artisan serve
 ```
+___
 
 # 4. Frontend
+
+### 4.1 Views
 * buat template dengan nama base.blade.php simpan di folder `resources/views/layout/`
 * isi dengan template starter bootstrap lalu susun template dengan [blade templating](https://laravel.com/docs/9.x/blade#layouts-using-template-inheritance)
 * tambahkan container untuk membungkus `@yield('content')`
@@ -88,9 +96,16 @@ bs5-$
     semua konten halaman wajib di dalam sini
 @endsection
 ```
+* lihat dokumentasi [bootstrap](getbootstrap.com) untuk melihat komponen apa saja yang dapat digunakan
+* untuk pembuatan form pastikan untuk menambahkan `@csrf` di bawah tag `<form>`
+* dan pastikan untuk menambahkan attribute `method="post"` dan `action="/action"` di dalam tag `<form>`
+* tambahkan juga attribute `name="nama"` dan `required` jika diperlukan di dalam setiap tag `<input>`,`<select>`,`<textarea>`,dll
+
+### 4.2 Routing
 * buat routing untuk semua halaman di `routes/web.php`
 * ubah `a href` yang ada di navbar (base.blade.php), sesuaikan dengan yang ada di `routes/web.php`
 * teliti lagi penamaan, peletakan, dan pemanggilan halaman .blade.php
+___
 
 # 5. Backend
 * tambahkan data contoh / dummy ke dalam database melalui `phpmyadmin`
@@ -120,3 +135,25 @@ Route::get('/halaman', function(){
     </tr>
 @endforeach
 ```
+### 5.2 Inserting Data
+* untuk menginputkan data ke dalam database, pastikan form sudah ditulis dengan benar, cek lagi action-nya, dan name inputnya
+* tambahkan route untuk memanggil method `store` dari controller
+```php
+Route::post('/halaman/store', [NamaController::class, 'store']);
+```
+* tuliskan baris kode untuk store data ke dalam database di dalam method store yang berada di controller
+```php
+public function store(Request $request)
+    {
+        $siswa = Siswa::create([
+            'kolom1'=> $request->kolom1,
+            'kolom2'=> $request->kolom2,
+            'dst'=> $request->dst
+        ]);
+        return back();
+    }
+```
+* apabila ada data yang tidak masuk ke dalam database lihat lagi penulisan nama kolom di input dan controller apakah sudah sama dengan yang ada di database
+
+# Examples
+* 
