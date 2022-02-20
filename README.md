@@ -1,11 +1,11 @@
-### 1. Wireframing
+# 1. Wireframing
 * identifikasi kebutuhan sistem
 * tentukan tabel apa saja yang dibutuhkan
 * tentukan record/kolom apa saja yang harus dibuat
 * tentukan halaman apa saja yang harus dibuat
 * catat
 
-### 2. Instalasi
+# 2. Instalasi
 * buka folder `c:/xampp/htdocs/`
 * shift+klik kanan, jalankan pwsh 
 ```bash
@@ -13,7 +13,7 @@ composer create-project laravel/laravel (nama_project)
 ```
 * buat database di phpmyadmin
 
-### 3. Setup Project
+# 3. Setup Project
 * buka vscode, open folder
 * setup environment .env
 ```env
@@ -24,10 +24,23 @@ DB_DATABASE=(nama_database)
 ```bash
 php artisan make:model (NamaModel) --migration
 ```
-* buat Controllers yang dibutuhkan dengan ctrl+shift+p artisan make controllers atau dengan terminal
+* buat semua Controllers yang dibutuhkan dengan ctrl+shift+p artisan make controllers atau dengan terminal
 * * aturan penamaan controller : diawali dengan huruf kapital diikuti dengan Controller
 ```bash
 php artisan make:controller NamaController
+```
+* buat skema semua tabel yang sudah dibuat di dalam migration
+* sesuaikan nama kolom dengan tipe datanya, [dokumentasi](https://laravel.com/docs/9.x/migrations#available-column-types)
+* tambahkan `unique()` di setiap primary key dari setiap tabel
+* *penamaan kolom jangan pakai - (strip), pakai _ (underscore)*
+```php
+Schema::create('namatabels', function (Blueprint $table) {
+            $table->id(); //biarkan
+            $table->string('kolom_primarykey')->unique();
+            $table->integer('kolom2');
+            $table->text('dst');
+            $table->timestamps(); //biarkan
+        });
 ```
 * jalankan migration
 ```env
@@ -38,7 +51,7 @@ php artisan migrate
 php artisan serve
 ```
 
-### 4. Frontend
+# 4. Frontend
 * buat template dengan nama base.blade.php simpan di folder `resources/views/layout/`
 * isi dengan template starter bootstrap lalu susun template dengan [blade templating](https://laravel.com/docs/9.x/blade#layouts-using-template-inheritance)
 * tambahkan container untuk membungkus `@yield('content')`
@@ -76,10 +89,11 @@ bs5-$
 @endsection
 ```
 * buat routing untuk semua halaman di `routes/web.php`
+* ubah `a href` yang ada di navbar (base.blade.php), sesuaikan dengan yang ada di `routes/web.php`
 * teliti lagi penamaan, peletakan, dan pemanggilan halaman .blade.php
 
-### 5. Backend
-* tambahkan data contoh / dummy ke dalam database
+# 5. Backend
+* tambahkan data contoh / dummy ke dalam database melalui `phpmyadmin`
 * tambahkan fillable / kolom yang boleh diisi di dalam class Model
 ```php
 class NamaModel extends Model
@@ -88,4 +102,21 @@ class NamaModel extends Model
     protected $fillable = ['kolom1','kolom2','dst'];
 }
 ```
-
+### 5.1 Showing Data
+* untuk menampilkan semua data dari database ubah routenya menjadi
+```php
+Route::get('/halaman', function(){
+    $models = NamaModel::get();
+    return view('user.profile', compact('models'));
+});
+```
+* lalu tambahkan foreach di dalam tabel di halaman `.blade.php` nya
+```blade
+@foreach ($models as $model)
+    <tr>
+      <td>{{ $model->kolom1 }}</td>
+      <td>{{ $model->kolom2 }}</td>
+      <td>{{ $model->dst }}</td>
+    </tr>
+@endforeach
+```
