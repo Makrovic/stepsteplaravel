@@ -122,7 +122,7 @@ class NamaModel extends Model
 ```php
 Route::get('/halaman', function(){
     $models = NamaModel::get();
-    return view('user.profile', compact('models'));
+    return view('halaman', compact('models'));
 });
 ```
 * lalu tambahkan foreach di dalam tabel di halaman `.blade.php` nya
@@ -156,4 +156,8 @@ public function store(Request $request)
 * apabila ada data yang tidak masuk ke dalam database lihat lagi penulisan nama kolom di input dan controller apakah sudah sama dengan yang ada di database
 
 # Examples
-* 
+* contoh [migration](../contohmigration.php)
+* contoh [template](../contohcontroller.php) untuk base.blade.php
+* contoh [model](../contohmodel.php)
+* contoh [route](../contohroute.php)
+* contoh [controller](../contohcontroller.php)
