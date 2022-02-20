@@ -1,4 +1,4 @@
-**baca dengan runtut dan teliti, kurang jelas lihat dokumentasi**
+**baca dengan runtut dan teliti, kurang jelas lihat dokumentasi, contoh di bagian paling bawah**
 
 # 1. Wireframing
 * identifikasi kebutuhan sistem
